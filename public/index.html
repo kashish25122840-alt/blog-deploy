@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Blog</title>
+</head>
+<body>
+  <h1>Blogs</h1>
+
+  <div id="blogs"></div>
+
+  <h2>Add Blog</h2>
+  <input id="title" placeholder="Title"><br>
+  <input id="content" placeholder="Content"><br>
+  <button onclick="addBlog()">Add</button>
+
+  <script>
+    const API = "https://blog-deploy-0amp.onrender.com/blogs";
+
+    async function loadBlogs() {
+      const res = await fetch(API);
+      const data = await res.json();
+
+      const div = document.getElementById("blogs");
+      div.innerHTML = data.map(b => 
+        `<p><b>${b.title}</b>: ${b.content}</p>`
+      ).join("");
+    }
+
+    async function addBlog() {
+      await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: document.getElementById("title").value,
+          content: document.getElementById("content").value
+        })
+      });
+
+      loadBlogs();
+    }
+
+    loadBlogs();
+  </script>
+</body>
+</html>

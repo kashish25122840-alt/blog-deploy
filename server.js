@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path"); // 👈 NEW
 
 const Blog = require("./models/Blog");
 
@@ -12,8 +13,11 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-// Test route
-app.get("/", (req, res) => {
+// 👇 Serve frontend (IMPORTANT)
+app.use(express.static(path.join(__dirname, "public")));
+
+// Test route (optional, can remove later)
+app.get("/api", (req, res) => {
   res.send("API is running...");
 });
 
